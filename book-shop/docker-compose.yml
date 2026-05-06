@@ -5,9 +5,10 @@ services:
     restart: always
 
     env_file:
-      - .env
+      - .env.example
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8000:8000"
     networks:
@@ -17,8 +18,13 @@ services:
     container_name: bookshopDB
     restart: always
 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tempUser -d bookshopdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     env_file:
-      - .env
+      - .env.example
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:

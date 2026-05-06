@@ -11,43 +11,17 @@ Book Shop web application.
 
 ## Setup & Run
 
-### 1. Create environment file
-
-cp .env.example .env
-
-
 ### 2. Start the application
 
-
+```bash
 docker compose up --build
-# Book Shop Project
-
-Django-based Book Shop web application.
-
-## Project By
-
-- Leen Shehadeh — 20220648
-- Bushra Abuhantantash — 20220402
-
----
-
-## Setup & Run
-
-### 1. Create environment file
-
-cp .env.example .env
-
-
-### 2. Build and start the application
-
-
-docker compose up --build
-
+```
 
 ### 3. Open in browser
 
-
+```text
 http://localhost:8000
+```
 
 ---
 ## prerequirements
