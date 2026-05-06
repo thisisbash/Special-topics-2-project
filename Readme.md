@@ -11,19 +11,13 @@ Book Shop web application.
 
 ## Setup & Run
 
-### 1. Create environment file
-
-```bash
-cp .env.example .env
-```
-
-### 2. Start the application
+### 1. Start and run the application
 
 ```bash
 docker compose up --build
 ```
 
-### 3. Open in browser
+### 2. Open in browser
 
 ```text
 http://localhost:8000
