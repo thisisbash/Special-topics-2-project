@@ -17,7 +17,7 @@ Book Shop web application.
 docker compose up --build
 ```
 
-### 3. Open in browser
+### 2. Open in browser
 
 ```text
 http://localhost:8000
