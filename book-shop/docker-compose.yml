@@ -1,7 +1,6 @@
 services:
   backend:
     build: .
-    container_name: bookshop_django
     restart: always
 
     env_file:
@@ -15,7 +14,6 @@ services:
       - bookshopnet
   db:
     image: postgres:15
-    container_name: bookshopDB
     restart: always
 
     healthcheck:
