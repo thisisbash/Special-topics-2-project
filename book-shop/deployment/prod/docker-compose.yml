@@ -1,0 +1,36 @@
+services:
+  backend:
+    image: thisisbash/bookshop-st2:prod
+    restart: always
+
+    env_file:
+      - .env
+
+    depends_on:
+      - db
+
+    ports:
+      - "8003:8000"
+
+    networks:
+      - bookshopnet
+
+  db:
+    image: postgres:15
+    restart: always
+
+    env_file:
+      - .env
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - bookshopnet
+
+volumes:
+  postgres_data:
+
+networks:
+  bookshopnet:
+    driver: bridge
