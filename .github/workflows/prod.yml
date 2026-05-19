@@ -1,0 +1,42 @@
+name: Prod promotion deploy
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Upload deployment files to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.EC2_HOST }}
+          username: ${{ vars.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "book-shop/deployment/deploy.sh,book-shop/deployment/prod/docker-compose.yml"
+          target: "/tmp/bookshop-prod"
+          overwrite: true
+
+      - name: Promote selected image to prod
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ vars.EC2_HOST }}
+          username: ${{ vars.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            mkdir -p /opt/bookshop/prod
+            cp /tmp/bookshop-prod/book-shop/deployment/deploy.sh /opt/bookshop/deploy.sh
+            cp /tmp/bookshop-prod/book-shop/deployment/prod/docker-compose.yml /opt/bookshop/prod/docker-compose.yml
+            chmod +x /opt/bookshop/deploy.sh
+            DEPLOY_ENV=prod \
+            IMAGE_REPOSITORY="${{ vars.IMAGE_NAME }}" \
+            IMAGE_TAG="${{ vars.IMAGE_VERSION }}" \
+            DOCKERHUB_USERNAME="${{ secrets.DOCKERHUB_USERNAME }}" \
+            DOCKERHUB_TOKEN="${{ secrets.DOCKERHUB_TOKEN }}" \
+            /opt/bookshop/deploy.sh
