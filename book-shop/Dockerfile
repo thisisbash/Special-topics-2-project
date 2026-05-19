@@ -2,11 +2,13 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+ARG APP_ARTIFACT
 
-RUN pip install --no-cache-dir -r requirements.txt
+COPY ${APP_ARTIFACT} /tmp/app.tar.gz
 
-COPY . .
+RUN tar -xzf /tmp/app.tar.gz -C /app --strip-components=1 \
+    && rm /tmp/app.tar.gz \
+    && pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
 
